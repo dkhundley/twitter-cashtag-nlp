@@ -87,19 +87,15 @@ print(json.dumps(response.json()))
 ## STARTING TWEET STREAM
 ## ---------------------------------------------------------------------------------------------------------------------
 print('Starting tweet stream with new rules in effect...')
-# response = requests.get(twitter_api_url, auth = bearer_oauth, stream = True)
-# print(response.status_code)
-# for response_line in response.iter_lines():
-#     if response_line:
-#         json_response = json.loads(response_line)
-#         print(json.dumps(json_response, indent = 4, sort_keys = True))
-
 test_counter = 0
-with requests.get(twitter_api_url, auth = bearer_oauth, stream = True) as response:
-    test_counter += 1
-    print(f'Test counter: {test_counter}')
-    print(response.status_code)
-    for response_line in response.iter_lines():
-        if response_line:
+response = requests.get(twitter_api_url, auth = bearer_oauth, stream = True)
+print(response.status_code)
+for response_line in response.iter_lines():
+    if response_line:
+        if test_counter >= 20:
+            break
+        else:
+            test_counter += 1
+            print(f'Test Counter {test_counter}')
             json_response = json.loads(response_line)
             print(json.dumps(json_response, indent = 4, sort_keys = True))
